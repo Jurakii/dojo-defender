@@ -10,16 +10,7 @@ namespace SpriteKind {
     export const logo = SpriteKind.create()
 }
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (gameStart == 1) {
-        music.play(music.createSoundEffect(WaveShape.Noise, 1110, 2269, 255, 0, 100, SoundExpressionEffect.Vibrato, InterpolationCurve.Curve), music.PlaybackMode.InBackground)
-        projectile = sprites.createProjectileFromSprite(assets.image`myImage`, mySprite, 0, -150)
-        animation.attachAnimation(projectile, anim4)
-        animation.setAction(projectile, ActionKind.Idle)
-        projectile.setKind(SpriteKind.Projectile)
-    } else {
-        music.stopAllSounds()
-        sprites.destroyAllSpritesOfKind(SpriteKind.logo, effects.disintegrate, 200)
-    }
+	
 })
 sprites.onOverlap(SpriteKind.Flor, SpriteKind.Enemy, function (sprite, otherSprite) {
     sprites.destroyAllSpritesOfKind(SpriteKind.Enemy, effects.coolRadial, 500)
@@ -32,16 +23,15 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, oth
     sprites.destroy(otherSprite, effects.fire, 500)
     info.changeScoreBy(1)
 })
+let projectile: Sprite = null
 let projectile2: Sprite = null
 let mySprite2: Sprite = null
+let anim4: animation.Animation = null
 let anim3: animation.Animation = null
 let anim2: animation.Animation = null
 let anim: animation.Animation = null
-let anim4: animation.Animation = null
 let mySprite: Sprite = null
-let projectile: Sprite = null
 let gameStart = 0
-gameStart = 0
 scene.setBackgroundImage(img`
     cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
     cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
@@ -362,6 +352,21 @@ forever(function () {
             mySprite.x = 160
         } else if (mySprite.x > 160) {
             mySprite.x = 0
+        }
+    }
+})
+forever(function () {
+    if (gameStart == 1) {
+        if (controller.A.isPressed()) {
+            music.play(music.createSoundEffect(WaveShape.Noise, 1110, 2269, 255, 0, 100, SoundExpressionEffect.Vibrato, InterpolationCurve.Curve), music.PlaybackMode.InBackground)
+            projectile = sprites.createProjectileFromSprite(assets.image`myImage`, mySprite, 0, -150)
+            animation.attachAnimation(projectile, anim4)
+            animation.setAction(projectile, ActionKind.Idle)
+            projectile.setKind(SpriteKind.Projectile)
+            pause(700)
+        } else {
+            music.stopAllSounds()
+            sprites.destroyAllSpritesOfKind(SpriteKind.logo, effects.disintegrate, 200)
         }
     }
 })
